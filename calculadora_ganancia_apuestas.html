@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Ganancia</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; background: #f9f9f9; }
+    h2 { color: #333; }
+    label, input { display: block; margin-top: 10px; }
+    input[type="number"] { width: 100%; padding: 8px; }
+    button { margin-top: 15px; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+    .result { margin-top: 20px; background: #fff; padding: 15px; border: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+
+  <h2>Calculadora de % de Ganancia</h2>
+
+  <label>Cuota 1:</label>
+  <input type="number" id="cuota1" step="0.01">
+
+  <label>Dinero en Cuota 1 (AR$):</label>
+  <input type="number" id="monto1" step="0.01">
+
+  <label>Cuota 2:</label>
+  <input type="number" id="cuota2" step="0.01">
+
+  <button onclick="calcular()">Calcular</button>
+
+  <div class="result" id="resultado"></div>
+
+  <script>
+    function calcular() {
+      const c1 = parseFloat(document.getElementById('cuota1').value);
+      const m1 = parseFloat(document.getElementById('monto1').value);
+      const c2 = parseFloat(document.getElementById('cuota2').value);
+
+      if (isNaN(c1) || isNaN(m1) || isNaN(c2) || c1 <= 0 || c2 <= 0 || m1 <= 0) {
+        document.getElementById('resultado').innerHTML = "Por favor, completá todos los campos con valores válidos.";
+        return;
+      }
+
+      const m2 = (c1 * m1) / c2;
+      const totalInvertido = m1 + m2;
+      const gananciaBruta = c1 * m1; // o m2 * c2 (debería ser igual)
+      const gananciaNeta = gananciaBruta - totalInvertido;
+      const porcentaje = (gananciaNeta / totalInvertido) * 100;
+
+      document.getElementById('resultado').innerHTML = `
+        <strong>Debés apostar en Cuota 2:</strong> AR$ ${m2.toFixed(2)}<br>
+        <strong>Total invertido:</strong> AR$ ${totalInvertido.toFixed(2)}<br>
+        <strong>Ganancia neta:</strong> AR$ ${gananciaNeta.toFixed(2)}<br>
+        <strong>Porcentaje de ganancia:</strong> ${porcentaje.toFixed(2)}%
+      `;
+    }
+  </script>
+
+</body>
+</html>
